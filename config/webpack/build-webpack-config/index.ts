@@ -3,30 +3,24 @@ import "webpack-dev-server";
 import { buildLoaders } from "../build-loaders";
 import { buildPlugins } from "../build-plugins";
 import { BuildOptions } from "../types";
+import { buildDevServer } from "../build-dev-server";
 
-export const buildWebpackConfig = ({
-  mode,
-  port,
-  isDev,
-  paths,
-}: BuildOptions): webpack.Configuration => {
+export const buildWebpackConfig = (
+  options: BuildOptions
+): webpack.Configuration => {
+  const { mode, isDev, paths } = options;
+
   return {
     mode,
     entry: paths.entry,
     devtool: isDev ? "inline-source-map" : undefined,
-    devServer: isDev
-      ? {
-          port,
-          historyApiFallback: true,
-          hot: true,
-        }
-      : undefined,
+    devServer: isDev ? buildDevServer(options) : undefined,
     output: {
       filename: "[name].[contenthash].js",
       path: paths.dist,
       clean: true,
     },
-    module: buildLoaders(),
+    module: { rules: buildLoaders(options) },
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
     },

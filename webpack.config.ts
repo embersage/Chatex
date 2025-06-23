@@ -1,7 +1,7 @@
 import path from "path";
 import webpack from "webpack";
-import { BuildEnv, BuildPaths } from "./src/config/webpack/types";
-import { buildWebpackConfig } from "./src/config/webpack/build-webpack-config";
+import { BuildEnv, BuildPaths } from "./config/webpack/types";
+import { buildWebpackConfig } from "./config/webpack/build-webpack-config";
 
 export default (env: BuildEnv) => {
   const port = env.port || 3000;
